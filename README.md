@@ -11,5 +11,4 @@ Lo relacionado al modelo IA de la camara estara en un repositorio aparte. futura
   __    __  _____  ___   ___   _          _      _    _____  _     ___   __  
  / /\  ( (`  | |  | |_) / / \ | |\ |     | |\/| \ \_/  | |  | |_| / / \ ( (` 
 /_/--\ _)_)  |_|  |_| \ \_\_/ |_| \|     |_|  |  |_|   |_|  |_| | \_\_/ _)_)
-                                                                                                                                                  
 ```
