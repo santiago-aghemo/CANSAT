@@ -7,6 +7,10 @@ En lo que respecta LoRa, seran los archvos de todo lo que considere Telemetria, 
 
 Lo relacionado al modelo IA de la camara estara en un repositorio aparte. futura integracion de todo el proyecto en un solo repo? capaz
 
+drive del equipo: 
+
+https://drive.google.com/drive/folders/1-Zg_ADwMWo1KT8_7Tv-WlGUf1hcQqOph?usp=sharing
+
 ```
   ____  _____ ______  ____   ___   ____       ___ ___  __ __  ______  __ __   ___   _____
  /    |/ ___/|      ||    \ /   \ |    \     |   |   ||  |  ||      ||  |  | /   \ / ___/
