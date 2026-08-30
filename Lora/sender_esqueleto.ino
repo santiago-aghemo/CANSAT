@@ -16,7 +16,22 @@
 #include "LoRaWan_APP.h"
 #include "Arduino.h"
 
-// ==========================================================
+
+
+
+ /*
+ NOTA DE SANTI:
+ este codigo es el "esqueleto" de lo que usamos el año pasado. Agarre el codigo que incluia en este codigo todo el procesamiento y toma de datos. deberia investigar si esta implementacion es ideal. segun lei con el chat
+ usa, digamos, "lo que viene incluido" en la placa para usar el lora, y no usa librerias externas para esta tarea como hacian los ejemplos que me tiro claude. voy a intentar hacer una copia de este archivo (voy a dejar 
+ este esqueleto suelto por las dudas) con el bmp280 implementado. IMPORANTE, VER SI ESTA IMPLEMENTACION ES LA MAS EFICIENTE. tambien deberia de ver de hacer anotacioens en este documento para tener explicacion de lo que
+ hace cada cosa
+
+ notar que tambien hay comentarios que hizo claude
+ */
+
+
+
+ // ==========================================================
 // ACA VAN LOS INCLUDES Y OBJETOS DE TUS SENSORES
 // Ejemplo:
 // #include <DHT.h>
@@ -26,27 +41,28 @@
 // ==========================================================
 
 
-#define RF_FREQUENCY                                915000000 // Hz
+#define RF_FREQUENCY                                915000000 // Hz -> FRECUENCIA, en estacion terrena y cansat deben estar igual
 
-#define TX_OUTPUT_POWER                             5        // dBm
+#define TX_OUTPUT_POWER                             5        // dBm -> POTENCIA, directamente proporcional al consumo
 
-#define LORA_BANDWIDTH                              0         // [0: 125 kHz,
+#define LORA_BANDWIDTH                              0         // [0: 125 kHz, -> ANCHO DE BANDA, cuanto mas ancho de banda, mas rapido se transmite, pero suele empeorar la sensibilidad
                                                               //  1: 250 kHz,
                                                               //  2: 500 kHz,
                                                               //  3: Reserved]
-#define LORA_SPREADING_FACTOR                       7         // [SF7..SF12]
-#define LORA_CODINGRATE                             1         // [1: 4/5,
+#define LORA_SPREADING_FACTOR                       7         // [SF7..SF12] -> FACTOR DE SPREADING, cuanto mas alto, mas distancia cubre, pero tarda mas en enviar
+#define LORA_CODINGRATE                             1         // [1: 4/5, -> CORRECION DE ERRORES, mas correcion equivale a mas robustez ante ruido, pero es menos eficiente
                                                               //  2: 4/6,
                                                               //  3: 4/7,
                                                               //  4: 4/8]
-#define LORA_PREAMBLE_LENGTH                        8         // Same for Tx and Rx
-#define LORA_SYMBOL_TIMEOUT                         0         // Symbols
-#define LORA_FIX_LENGTH_PAYLOAD_ON                  false
-#define LORA_IQ_INVERSION_ON                        false
+#define LORA_PREAMBLE_LENGTH                        8         // Same for Tx and Rx -> LARGO DEL PREAMBULO, el preambulo es una "señal de aviso", para que el detector detecte que llega un paquete
+                                                              //                       que esta llegando, 8 simbolos suele ser el estandar.
+#define LORA_SYMBOL_TIMEOUT                         0         // Symbols -> SYMBOL TIMEOUT, define cuanto tiempo se espera para detectar simbolos LoRa
+#define LORA_FIX_LENGTH_PAYLOAD_ON                  false     // -> LONGITUD FIJA O VARIABLE DEL PAYLOAD. F=variable, T=fija.
+#define LORA_IQ_INVERSION_ON                        false     // ->INVERSION DE IQ, controla si la radio usa inversion de fase IQ
 
 
-#define RX_TIMEOUT_VALUE                            1000
-#define BUFFER_SIZE                                 60 // Define the payload size here (ajustar segun el largo de tu mensaje)
+#define RX_TIMEOUT_VALUE                            1000      // ->TIEMPO DE TIMEOUT, si no se recibe nada durante el tiempo dado, se considera que la recepcion fallo o termino
+#define BUFFER_SIZE                                 60
 
 char txpacket[BUFFER_SIZE];
 char rxpacket[BUFFER_SIZE];
