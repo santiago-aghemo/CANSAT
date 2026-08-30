@@ -61,98 +61,71 @@
 #define LORA_IQ_INVERSION_ON                        false     // ->INVERSION DE IQ, controla si la radio usa inversion de fase IQ
 
 
-#define RX_TIMEOUT_VALUE                            1000      // ->TIEMPO DE TIMEOUT, si no se recibe nada durante el tiempo dado, se considera que la recepcion fallo o termino
-#define BUFFER_SIZE                                 60        // -> TAMAÑO DEL BUFFER IMPORTANTE; ACA SE DEFINE EL TAMAÑO DEL PAQUETE QUE ENVIAMOS!! Corregir en funcion de que tanto terminemos mandando
+#define RX_TIMEOUT_VALUE                            0      // ->TIEMPO DE TIMEOUT, si no se recibe nada durante el tiempo dado, se considera que la recepcion fallo o termino
+#define BUFFER_SIZE                                 160        // -> TAMAÑO DEL BUFFER IMPORTANTE; ACA SE DEFINE EL TAMAÑO DEL PAQUETE QUE ENVIAMOS!! Corregir en funcion de que tanto terminemos mandando
                                                               // Hablando con Claude, estimo que para lo que vamos a mandar alrededor de 160 (inlcluyo un margen de seguridad) deberia bastar.
 
-char txpacket[BUFFER_SIZE];
 char rxpacket[BUFFER_SIZE];
-
-double txNumber;
 
 bool lora_idle = true;
 
 static RadioEvents_t RadioEvents;
-void OnTxDone(void);
-void OnTxTimeout(void);
+void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr);
+void OnRxTimeout(void);
+void OnRxError(void);
+
 
 void setup() {
     Serial.begin(115200);
     Mcu.begin(HELTEC_BOARD, SLOW_CLK_TPYE);
 
 
-    //Aca es donde lo definimos si es transmisor o receptor, en este caso es transmisor:
+    //Aca es donde lo definimos si es transmisor o receptor, en este caso es receptor:
 
-    txNumber = 0;
 
-    RadioEvents.TxDone = OnTxDone;
-    RadioEvents.TxTimeout = OnTxTimeout;
+    RadioEvents.RxDone = OnRxDone;
+    RadioEvents.RxTimeout = OnRxTimeout;
+    RadioEvents.RxError = OnRxError;
 
     Radio.Init(&RadioEvents);
     Radio.SetChannel(RF_FREQUENCY);
-    Radio.SetTxConfig(MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
-                       LORA_SPREADING_FACTOR, LORA_CODINGRATE,
-                       LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
-                       true, 0, 0, LORA_IQ_INVERSION_ON, 3000);
-
-    // ==========================================================
-    // ACA VA LA INICIALIZACION DE TUS SENSORES
-    // Ejemplo:
-    // dht.begin();
-    //
-    // if (pressure.begin()) {
-    //   Serial.println("BMP180 init success");
-    // } else {
-    //   Serial.println("BMP180 init fail");
-    //   while (1);
-    // }
-    // ==========================================================
+    Radio.SetRxConfig(MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
+                       LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
+                       LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
+                       0, true, 0, LORA_IQ_INVERSION_ON, true);
 }
 
 
 void loop()
 {
-  // Esperamos entre medidas
-  delay(500);
-
-  // ==========================================================
-  // ACA VAN TUS LECTURAS DE SENSORES
-  // Ejemplo:
-  // float h = dht.readHumidity();
-  // float t = dht.readTemperature();
-  // int raw_adc = analogRead(MQ_PIN);
-  // ==========================================================
-
-  if (lora_idle == true)
-  {
-    txNumber += 0.01;
-
-    // ==========================================================
-    // ACA ARMAS EL PAQUETE CON TUS DATOS
-    // Ejemplo:
-    // sprintf(txpacket, "Temperatura: %.2f C, Humedad: %.2f%%", t, h);
-    //
-    // Por ahora manda un contador de prueba:
-    sprintf(txpacket, "Paquete de prueba #%.2f", txNumber);
-    // ==========================================================
-
-    Serial.printf("\r\nsending packet \"%s\" , length %d\r\n", txpacket, strlen(txpacket));
-
-    Radio.Send((uint8_t *)txpacket, strlen(txpacket)); // send the package out
+  if(lora_idle){
+    Radio.Rx(0); //indica el timeout. 0=escucha para siempre.
     lora_idle = false;
   }
   Radio.IrqProcess();
 }
 
-void OnTxDone(void)
+
+//rssi= fuerza de señal; snr= signal to noise ratio, cuanto mas alto, mejor
+void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr)
 {
-    Serial.println("TX done......");
+    Radio.Sleep();
+    memcpy(rxpacket, payload, size);//copiamos el payload recibido en el buffer rxpacket, ya que payload es un puntero a memoria que se borra al salir de la funcion
+    rxpacket[size] = '\0'; // importante para tratarlo como string. C necesita un caracter nulo al final de los strings para saber donde termina el string. si no lo ponemos, puede que el string se "desborde" y lea basura de memoria.
+
+    Serial.printf("\r\nreceived packet \"%s\" with rssi %d , length %d\r\n", rxpacket, rssi, size);
+
     lora_idle = true;
 }
 
-void OnTxTimeout(void)
+void OnRxTimeout(void) //se llama en caso de timeout
 {
-    Radio.Sleep();
-    Serial.println("TX Timeout......");
+    Serial.println("RX Timeout......");
+    lora_idle = true;
+}
+
+void OnRxError(void) //se llama en caso de error
+{
+    Serial.println("RX Error......");
     lora_idle = true;
 }
