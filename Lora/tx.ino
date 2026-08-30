@@ -7,6 +7,9 @@
 //Comente ou remova para compilar o Slave
 // #define MASTER
  
+
+//este codigo me lo dio claude. no es lo mismo que use el año pasado. tendria que revisar como es que usa estas librerias
+
 #define SCK 5   // GPIO5  SCK
 #define MISO 19 // GPIO19 MISO
 #define MOSI 27 // GPIO27 MOSI
@@ -24,9 +27,9 @@ const String SETDATA = "setdata=";
 //Variável para controlar o display
 SSD1306 display(0x3c, 4, 15);
 
-LoRaSendReceive.ino - setupDisplay
+///LoRaSendReceive.ino - setupDisplay
 
-In this first setup, we will deal with the configuration of the display.
+//In this first setup, we will deal with the configuration of the display.
 
 void setupDisplay(){
   //O estado do GPIO16 é utilizado para controlar o display OLED
