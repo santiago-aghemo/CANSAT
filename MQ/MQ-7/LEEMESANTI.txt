@@ -1,0 +1,39 @@
+MQ-7
+General Information
+Sensor: MQ-7
+Manufacturer: Hanwei Electronics Group Corporation
+Target gas: Carbon Monoxide (CO)
+Application: Detection of carbon monoxide
+Sensor type: Semiconductor gas sensor
+Hardware status: Not received yet
+Final manufacturer: TBD
+Final module: TBD
+Reference Datasheet
+
+This project currently uses the Hanwei MQ-7 datasheet as a reference.(el de la carpetaa)
+
+Main Specifications
+Detection range: 20–2,000 ppm CO
+Circuit voltage: approximately 5 V
+High heating voltage: 5 V ± 0.1 V
+Low heating voltage: 1.4 V ± 0.1 V
+High heating time: approximately 60 s
+Low heating time: approximately 90 s
+Recommended preheating: ≥48 h
+ESP32 Integration
+
+The MQ-7 requires a controlled heater cycle for proper CO detection.
+
+The exact GPIO and electrical interface are TBD.
+
+Software Status
+[ ] ADC reading
+[ ] Heater control
+[ ] Heating cycle implementation
+[ ] Voltage conversion
+[ ] Sensor resistance (Rs) calculation
+[ ] R0 calibration
+[ ] PPM estimation
+[ ] Signal filtering
+[ ] Threshold/alarm configuration
+[ ] Hardware validation
