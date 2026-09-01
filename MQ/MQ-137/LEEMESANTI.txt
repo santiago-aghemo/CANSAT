@@ -1,0 +1,35 @@
+MQ-137
+General Information
+Sensor: MQ-137
+Manufacturer: Zhengzhou Winsen Electronics Technology Co., Ltd.
+Target gas: Ammonia (NH₃)
+Application: Detection of ammonia
+Sensor type: Semiconductor gas sensor
+Hardware status: Not received yet
+Final manufacturer: TBD
+Final module: TBD
+Reference Datasheet
+
+This project currently uses the Winsen MQ-137 datasheet as a reference.(lo sabes)
+
+Main Specifications
+Detection range: approximately 5–500 ppm NH₃
+Circuit voltage (Vc): 5.0 V ± 0.1 V
+Heater voltage (VH): 5.0 V ± 0.1 V
+Heater resistance: approximately 29–30 Ω
+Load resistance (RL): Adjustable
+Preheating time: >48 h
+Sensitive material: SnO₂
+ESP32 Integration
+
+The MQ-137 provides an analog signal that can be read using an ESP32 ADC input.
+
+Software Status
+[ ] ADC reading
+[ ] Voltage conversion
+[ ] Sensor resistance (Rs) calculation
+[ ] R0 calibration
+[ ] PPM estimation
+[ ] Signal filtering
+[ ] Threshold/alarm configuration
+[ ] Hardware validation

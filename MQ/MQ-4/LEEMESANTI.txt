@@ -1,0 +1,38 @@
+MQ-4
+General Information
+Sensor: MQ-4
+Manufacturer: Hanwei Electronics Group Corporation
+Target gas: Methane (CH₄)
+Application: Detection of methane and natural gas
+Sensor type: Semiconductor gas sensor
+Hardware status: Not received yet
+Final manufacturer: TBD
+Final module: TBD
+Reference Datasheet
+
+This project currently uses the Hanwei MQ-4 datasheet as a reference.(Los datasheets subidos a la carpeta)
+
+The final sensor and module specifications must be verified once the hardware is received.
+
+Main Specifications
+Detection range: 200–10,000 ppm CH₄
+Heater voltage: 5 V ± 0.1 V
+Heater resistance: approximately 33 Ω
+Recommended load resistance (RL): approximately 20 kΩ
+Recommended RL range: 10–47 kΩ
+Preheating time: >24 h
+ESP32 Integration
+
+The MQ-4 provides an analog signal that can be read using an ESP32 ADC input.
+
+The exact GPIO and electrical interface are TBD, since the final module has not been selected yet.
+
+Software Status
+[ ] ADC reading
+[ ] Voltage conversion
+[ ] Sensor resistance (Rs) calculation
+[ ] R0 calibration
+[ ] PPM estimation
+[ ] Signal filtering
+[ ] Threshold/alarm configuration
+[ ] Hardware validation
