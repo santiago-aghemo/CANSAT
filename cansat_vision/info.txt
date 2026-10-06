@@ -1,0 +1,11 @@
+sudo apt install -y python3-serial python3-pip psmisc git
+pip install --break-system-packages pynmea2
+sudo raspi-config nonint do_serial_cons 1
+sudo raspi-config nonint do_serial_hw 0
+grep -q '^enable_uart=1' /boot/firmware/config.txt || echo 'enable_uart=1' | sudo tee -a /boot/firmware/config.txt
+grep -q '^dtoverlay=disable-bt' /boot/firmware/config.txt || echo 'dtoverlay=disable-bt' | sudo tee -a /boot/firmware/config.txt
+sudo systemctl disable --now hciuart 2>/dev/null || true
+sudo reboot
+
+
+instalar pip cuando se haga sd nueva!
