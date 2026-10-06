@@ -1,3 +1,14 @@
+========================================================================
+ACA VA A IR TODO LO QUE SE TIENE QUE HACER CADA VEZ QUE RESETEEMOS LA PI
+========================================================================
+
+PARA LO DE LA CAMARA
+
+
+
+
+PARA QUE ANDEN LAS COMUNICACIONES DE PI A ESP
+
 sudo apt install -y python3-serial python3-pip psmisc git
 pip install --break-system-packages pynmea2
 sudo raspi-config nonint do_serial_cons 1
